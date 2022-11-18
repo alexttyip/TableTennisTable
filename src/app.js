@@ -1,6 +1,9 @@
 const fileService = require('./file_service');
 const leagueRenderer = require('./league_renderer');
 const InvalidArgumentException = require('./invalid_argument_exception');
+const pathLib = require('path');
+
+const SAVE_DIRECTORY = 'saved_games';
 
 exports.startGame = function (initialLeague) {
   let league = initialLeague;
@@ -12,6 +15,11 @@ exports.startGame = function (initialLeague) {
     const loser = found[2];
 
     league.recordWin(winner, loser);
+  }
+
+  function autosave () {
+    const filename = pathLib.join(SAVE_DIRECTORY, league.leagueId) + '.json';
+    fileService.save(filename, league);
   }
 
   function save (command) {
@@ -31,8 +39,10 @@ exports.startGame = function (initialLeague) {
       try {
         if (command.startsWith('add player')) {
           league.addPlayer(command.slice(11));
+          autosave();
         } else if (command.startsWith('record win')) {
           recordWin(command);
+          autosave();
         } else if (command === 'print') {
           return leagueRenderer.render(league);
         } else if (command === 'winner') {
@@ -41,6 +51,8 @@ exports.startGame = function (initialLeague) {
           save(command);
         } else if (command.startsWith('load')) {
           load(command);
+        } else if (command === 'quit') {
+          return null;
         } else {
           return `Unknown command "${command}"`;
         }

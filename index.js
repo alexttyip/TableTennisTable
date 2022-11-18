@@ -43,12 +43,10 @@ let isGameActive = true;
 while (isGameActive) {
   const command = readline.prompt();
 
-  if (command === 'quit') {
+  const response = game.sendCommand(command);
+  if (response) {
+    console.log(response);
+  } else if(response === null){
     isGameActive = false;
-  } else {
-    const response = game.sendCommand(command);
-    if (response) {
-      console.log(response);
-    }
   }
 }

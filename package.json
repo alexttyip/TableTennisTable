@@ -19,6 +19,7 @@
     "sinon": "^5.0.10"
   },
   "dependencies": {
-    "readline-sync": "^1.4.9"
+    "readline-sync": "^1.4.9",
+    "uuid": "^9.0.0"
   }
 }
