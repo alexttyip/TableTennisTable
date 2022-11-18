@@ -105,7 +105,7 @@ describe('app command processing', function () {
     const game = app.startGame(league);
 
     // When
-    const response=game.sendCommand('quit');
+    const response = game.sendCommand('quit');
 
     // Then
     expect(response).to.be.equal(null);
